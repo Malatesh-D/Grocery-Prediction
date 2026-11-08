@@ -1,0 +1,59 @@
+{
+  "features": [
+    "household_size",
+    "monthly_household_income_inr",
+    "shopping_trips_per_month",
+    "avg_items_per_trip",
+    "branded_spending_pct",
+    "fresh_produce_spending_pct",
+    "online_shopping_pct",
+    "previous_month_expenditure_inr"
+  ],
+  "target": "monthly_grocery_expenditure_inr",
+  "target_unit": "INR per month",
+  "feature_ranges": {
+    "household_size": {
+      "min": 1.0,
+      "max": 8.0
+    },
+    "monthly_household_income_inr": {
+      "min": 8795.6,
+      "max": 311868.24
+    },
+    "shopping_trips_per_month": {
+      "min": 1.0,
+      "max": 19.0
+    },
+    "avg_items_per_trip": {
+      "min": 3.0,
+      "max": 49.0
+    },
+    "branded_spending_pct": {
+      "min": 5.0,
+      "max": 85.0
+    },
+    "fresh_produce_spending_pct": {
+      "min": 12.0,
+      "max": 90.0
+    },
+    "online_shopping_pct": {
+      "min": 1.05,
+      "max": 85.0
+    },
+    "previous_month_expenditure_inr": {
+      "min": 2604.08,
+      "max": 18045.3
+    }
+  },
+  "feature_defaults": {
+    "household_size": 3.0,
+    "monthly_household_income_inr": 52488.175,
+    "shopping_trips_per_month": 10.0,
+    "avg_items_per_trip": 24.0,
+    "branded_spending_pct": 41.365,
+    "fresh_produce_spending_pct": 58.89,
+    "online_shopping_pct": 27.365000000000002,
+    "previous_month_expenditure_inr": 7299.21
+  },
+  "data_kind": "synthetic"
+}

@@ -1,0 +1,98 @@
+{
+  "selected_model": "Linear Regression",
+  "selection_rule": "Lowest mean training-only CV RMSE; CV MAE tie-breaker",
+  "split_strategy": "Random independent-row 80/20 holdout; shuffled KFold on training split; 5-fold CV on training split",
+  "random_seed": 42,
+  "test_size": 0.2,
+  "training_records": 1600,
+  "test_records": 400,
+  "features": [
+    "household_size",
+    "monthly_household_income_inr",
+    "shopping_trips_per_month",
+    "avg_items_per_trip",
+    "branded_spending_pct",
+    "fresh_produce_spending_pct",
+    "online_shopping_pct",
+    "previous_month_expenditure_inr"
+  ],
+  "target": "monthly_grocery_expenditure_inr",
+  "data_kind": "synthetic",
+  "provenance": "Seeded synthetic demonstration generator (seed 42)",
+  "source_name": "grocery_data.csv",
+  "dataset_fingerprint_sha256": "acaf376d3b3a82d7279aea800860000c2815d401dea52f09e961560aaf931460",
+  "trained_at_utc": "2026-10-14T10:04:33.948452+00:00",
+  "artifact_sha256": "87d173bbb1f1145f2a7ca6a1fc29831ccdaa59d932c98afae18fb2675c1ee9df",
+  "artifact_version": "1.0",
+  "feature_ranges": {
+    "household_size": {
+      "min": 1.0,
+      "max": 8.0
+    },
+    "monthly_household_income_inr": {
+      "min": 8795.6,
+      "max": 311868.24
+    },
+    "shopping_trips_per_month": {
+      "min": 1.0,
+      "max": 19.0
+    },
+    "avg_items_per_trip": {
+      "min": 3.0,
+      "max": 49.0
+    },
+    "branded_spending_pct": {
+      "min": 5.0,
+      "max": 85.0
+    },
+    "fresh_produce_spending_pct": {
+      "min": 12.0,
+      "max": 90.0
+    },
+    "online_shopping_pct": {
+      "min": 1.05,
+      "max": 85.0
+    },
+    "previous_month_expenditure_inr": {
+      "min": 2604.08,
+      "max": 18045.3
+    }
+  },
+  "feature_defaults": {
+    "household_size": 3.0,
+    "monthly_household_income_inr": 52488.175,
+    "shopping_trips_per_month": 10.0,
+    "avg_items_per_trip": 24.0,
+    "branded_spending_pct": 41.365,
+    "fresh_produce_spending_pct": 58.89,
+    "online_shopping_pct": 27.365000000000002,
+    "previous_month_expenditure_inr": 7299.21
+  },
+  "quality_report": {
+    "rows": 2000,
+    "features": [
+      "household_size",
+      "monthly_household_income_inr",
+      "shopping_trips_per_month",
+      "avg_items_per_trip",
+      "branded_spending_pct",
+      "fresh_produce_spending_pct",
+      "online_shopping_pct",
+      "previous_month_expenditure_inr"
+    ],
+    "missing_by_column": {
+      "household_size": 0,
+      "monthly_household_income_inr": 0,
+      "shopping_trips_per_month": 0,
+      "avg_items_per_trip": 0,
+      "branded_spending_pct": 0,
+      "fresh_produce_spending_pct": 0,
+      "online_shopping_pct": 0,
+      "previous_month_expenditure_inr": 0,
+      "monthly_grocery_expenditure_inr": 0
+    },
+    "duplicate_rows": 0,
+    "target_min_inr": 911.37,
+    "target_max_inr": 20316.15
+  }
+}

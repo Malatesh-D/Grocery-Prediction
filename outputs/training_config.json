@@ -1,0 +1,38 @@
+{
+  "seed": 42,
+  "test_fraction": 0.2,
+  "cv_folds": 5,
+  "selection_metric": "mean CV RMSE with CV MAE tie-break",
+  "models": [
+    "Mean baseline",
+    "Linear Regression",
+    "Random Forest",
+    "HistGradientBoosting"
+  ],
+  "model_parameters": {
+    "Mean baseline": {
+      "strategy": "mean"
+    },
+    "Random Forest": {
+      "n_estimators": 250,
+      "min_samples_leaf": 3,
+      "max_features": 0.85,
+      "random_state": 42
+    },
+    "HistGradientBoosting": {
+      "max_iter": 150,
+      "l2_regularization": 1.0,
+      "random_state": 42
+    }
+  },
+  "feature_schema": [
+    "household_size",
+    "monthly_household_income_inr",
+    "shopping_trips_per_month",
+    "avg_items_per_trip",
+    "branded_spending_pct",
+    "fresh_produce_spending_pct",
+    "online_shopping_pct",
+    "previous_month_expenditure_inr"
+  ]
+}

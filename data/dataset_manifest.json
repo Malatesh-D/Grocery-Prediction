@@ -1,0 +1,6 @@
+{
+  "data_kind": "synthetic",
+  "source_name": "grocery_data.csv",
+  "provenance": "Seeded synthetic demonstration generator (seed 42)",
+  "seed": 42
+}

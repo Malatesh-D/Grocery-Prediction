@@ -1,0 +1,19 @@
+{
+  "selected_model": "Linear Regression",
+  "selection_rule": "Lowest test RMSE; MAE tie-breaker",
+  "random_seed": 42,
+  "test_size": 0.2,
+  "training_records": 1600,
+  "test_records": 400,
+  "features": [
+    "household_size",
+    "monthly_household_income_inr",
+    "shopping_trips_per_month",
+    "avg_items_per_trip",
+    "branded_spending_pct",
+    "fresh_produce_spending_pct",
+    "online_shopping_pct",
+    "previous_month_expenditure_inr"
+  ],
+  "target": "monthly_grocery_expenditure_inr"
+}
