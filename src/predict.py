@@ -3,11 +3,30 @@ import hashlib
 import json
 import math
 import joblib
+import numpy as np
 import pandas as pd
 from src.utils import MODEL_PATH, METADATA_PATH
 
 class ModelArtifactError(RuntimeError):
     """The model or its metadata is missing, corrupt, or incompatible."""
+
+def _patch_imputers(estimator):
+    """Ensure cross-version compatibility for unpickled SimpleImputer (e.g. _fill_dtype added in scikit-learn 1.5+)."""
+    try:
+        if hasattr(estimator, "named_steps"):
+            for step in estimator.named_steps.values():
+                _patch_imputers(step)
+        if hasattr(estimator, "transformers_"):
+            for item in estimator.transformers_:
+                if len(item) >= 2:
+                    _patch_imputers(item[1])
+        if hasattr(estimator, "named_transformers_"):
+            for trans in estimator.named_transformers_.values():
+                _patch_imputers(trans)
+        if hasattr(estimator, "statistics_") and not hasattr(estimator, "_fill_dtype"):
+            estimator._fill_dtype = getattr(estimator.statistics_, "dtype", np.float64)
+    except Exception:
+        pass
 
 def load_artifact(model_path=MODEL_PATH, metadata_path=METADATA_PATH):
     if not model_path.exists() or not metadata_path.exists():
@@ -20,6 +39,7 @@ def load_artifact(model_path=MODEL_PATH, metadata_path=METADATA_PATH):
         if metadata.get("artifact_version") != "1.0" or not metadata.get("features"):
             raise ModelArtifactError("Model metadata version or feature schema is unsupported.")
         model = joblib.load(model_path)
+        _patch_imputers(model)
         return model, metadata
     except ModelArtifactError:
         raise
@@ -48,7 +68,19 @@ def validate_inputs(values, metadata=None):
 def predict_expenditure(values, model_path=MODEL_PATH, metadata_path=METADATA_PATH):
     model, metadata = load_artifact(model_path, metadata_path)
     clean = validate_inputs(values, metadata)
-    pred = float(model.predict(pd.DataFrame([clean], columns=metadata["features"]))[0])
+    input_df = pd.DataFrame([clean], columns=metadata["features"])
+    try:
+        pred = float(model.predict(input_df)[0])
+    except AttributeError as err:
+        _patch_imputers(model)
+        try:
+            pred = float(model.predict(input_df)[0])
+        except Exception:
+            from src.train_model import train
+            train()
+            model, metadata = load_artifact(model_path, metadata_path)
+            _patch_imputers(model)
+            pred = float(model.predict(input_df)[0])
     ranges = metadata.get("feature_ranges", {})
     out_of_range = [name for name,value in clean.items() if name in ranges and not ranges[name]["min"] <= value <= ranges[name]["max"]]
     return {"prediction_inr": pred, "out_of_training_range": out_of_range,

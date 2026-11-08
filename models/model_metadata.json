@@ -21,7 +21,7 @@
   "provenance": "Seeded synthetic demonstration generator (seed 42)",
   "source_name": "grocery_data.csv",
   "dataset_fingerprint_sha256": "acaf376d3b3a82d7279aea800860000c2815d401dea52f09e961560aaf931460",
-  "trained_at_utc": "2026-10-14T10:04:33.948452+00:00",
+  "trained_at_utc": "2026-11-08T09:44:36.291293+00:00",
   "artifact_sha256": "87d173bbb1f1145f2a7ca6a1fc29831ccdaa59d932c98afae18fb2675c1ee9df",
   "artifact_version": "1.0",
   "feature_ranges": {
