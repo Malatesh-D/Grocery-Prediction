@@ -1,11 +1,18 @@
 """Safe-by-integrity-check inference against the project's trusted model artifact."""
+import sys
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parent.parent
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
 import hashlib
 import json
 import math
 import joblib
 import numpy as np
 import pandas as pd
-from src.utils import MODEL_PATH, METADATA_PATH
+from src.utils import MODEL_PATH, METADATA_PATH, inr
 
 class ModelArtifactError(RuntimeError):
     """The model or its metadata is missing, corrupt, or incompatible."""
@@ -87,3 +94,33 @@ def predict_expenditure(values, model_path=MODEL_PATH, metadata_path=METADATA_PA
             "model_version": metadata["artifact_version"],
             "dataset_fingerprint": metadata["dataset_fingerprint_sha256"],
             "data_kind": metadata["data_kind"], "model_name": metadata["selected_model"]}
+
+
+if __name__ == "__main__":
+    sample_input = {
+        "household_size": 4,
+        "monthly_household_income_inr": 65000.0,
+        "shopping_trips_per_month": 8,
+        "avg_items_per_trip": 22,
+        "branded_spending_pct": 45.0,
+        "fresh_produce_spending_pct": 55.0,
+        "online_shopping_pct": 30.0,
+        "previous_month_expenditure_inr": 7800.0,
+    }
+    print("=" * 70)
+    print("GROCERYSPEND AI - REAL-TIME INFERENCE ENGINE")
+    print("=" * 70)
+    result = predict_expenditure(sample_input)
+    print(f"Model Champion:          {result['model_name']}")
+    print(f"Artifact Version:        v{result['model_version']}")
+    print(f"Dataset Fingerprint:     {result['dataset_fingerprint'][:16]}...")
+    print("-" * 70)
+    print(f"Input Household Profile:")
+    for k, v in sample_input.items():
+        val_str = inr(v) if "inr" in k else f"{v}%" if "pct" in k else str(v)
+        print(f"  • {k.replace('_', ' ').title():<32}: {val_str}")
+    print("-" * 70)
+    print(f"PREDICTED MONTHLY SPEND: {inr(result['prediction_inr'])} ({result['prediction_inr']:.2f} INR)")
+    print(f"Out-of-range Warnings:   {len(result['out_of_training_range'])} detected")
+    print("=" * 70)
+

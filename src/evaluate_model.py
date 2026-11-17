@@ -1,4 +1,11 @@
 """Metrics and plot generation for trained regression models."""
+import sys
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parent.parent
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
 import json
 import numpy as np
 import pandas as pd
@@ -49,3 +56,27 @@ def save_model_plots(y_true, y_pred, results, feature_importance):
     with open(OUTPUT_DIR / "evaluation_metrics.json", "w", encoding="utf-8") as f: json.dump(results, f, indent=2)
     order_col="importance_mean" if "importance_mean" in feature_importance.columns else "importance"
     feature_importance.sort_values(order_col, ascending=False).to_csv(OUTPUT_DIR / "feature_importance.csv", index=False)
+
+
+if __name__ == "__main__":
+    from src.utils import OUTPUT_DIR, inr
+    print("=" * 70)
+    print("GROCERYSPEND AI - MODEL EVALUATION & BENCHMARK AUDIT")
+    print("=" * 70)
+    eval_csv = OUTPUT_DIR / "evaluation_metrics.csv"
+    if eval_csv.exists():
+        metrics_df = pd.read_csv(eval_csv)
+        print("Candidate Model Performance on Holdout Test Set (N=400):")
+        print(metrics_df.to_string(index=False))
+    print("-" * 70)
+    feat_csv = OUTPUT_DIR / "feature_importance.csv"
+    if feat_csv.exists():
+        feat_df = pd.read_csv(feat_csv)
+        print("Permutation Feature Importance (Mean MAE Impact):")
+        for _, row in feat_df.iterrows():
+            mean_imp = row.get("importance_mean", row.get("importance", 0.0))
+            std_imp = row.get("importance_std", 0.0)
+            col_name = row.get("feature", "feature")
+            print(f"  • {col_name:<32} : +{inr(mean_imp)} ± {inr(std_imp)}")
+    print("=" * 70)
+

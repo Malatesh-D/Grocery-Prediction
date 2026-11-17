@@ -1,4 +1,11 @@
 """Leakage-aware benchmark, selection, evaluation, and artifact persistence."""
+import sys
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parent.parent
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
 from datetime import datetime, timezone
 import os
 os.environ.setdefault("LOKY_MAX_CPU_COUNT", "1")
